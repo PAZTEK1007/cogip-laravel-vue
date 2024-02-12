@@ -1,0 +1,19 @@
+// Vendor
+@import 'vendor/reset';
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Components
+@import 'components/navComponent';
+
+// Pages
+@import 'pages/register';
+@import 'pages/login';
+@import 'pages/companies';
+@import 'pages/company';
+@import 'pages/home';
+@import 'pages/contact';
+

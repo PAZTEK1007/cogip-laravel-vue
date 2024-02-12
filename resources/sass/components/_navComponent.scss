@@ -1,0 +1,142 @@
+
+.log{
+    display: flex;
+    position: absolute;
+    right: 3rem;
+    gap: 1rem;
+    #logMsg{
+        font-family: Arial;
+        font-size: 15px;
+        letter-spacing: 1px;
+        margin-top: 5px;
+        margin-right: 1rem;
+        color: black;
+    }
+    #rgstrBtn{
+        text-decoration: none;
+        color: black;
+        font-family: Arial;
+        font-size: 15px;
+        letter-spacing: 1px;
+        border: none;
+        background-color: transparent;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        cursor: pointer;
+        transition: all 0.1s ease-in-out;
+        &:hover, &:focus{
+            cursor: pointer;
+            border: 1px solid white;
+            background-color: white;
+            border-radius: 0.5rem;
+        }
+    }
+    #dashImg{
+        width: 2rem;
+        height: 2rem;
+        position: relative;
+        bottom: 0.5rem;
+        &:hover{
+            cursor: pointer;
+            border: 3px solid white;
+            border-radius: 50%;
+            background-color: white;
+        }
+    }
+
+    #logoutBtn{
+        text-decoration: none;
+        position: relative;
+        bottom: 0.5rem;
+        color: black;
+        font-family: Arial;
+        font-size: 15px;
+        letter-spacing: 1px;
+        border: none;
+        background-color: transparent;
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        cursor: pointer;
+        transition: all 0.1s ease-in-out;
+        &:hover, &:focus{
+            cursor: pointer;
+            border: 1px solid white;
+            background-color: white;
+            border-radius: 0.5rem;
+        }
+     }
+    #loginBtn{
+        text-decoration: none;
+        color: black;
+        font-family: Arial;
+        font-size: 15px;
+        letter-spacing: 1px;
+        border: none;
+        background-color: transparent;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        cursor: pointer;
+        transition: all 0.1s ease-in-out;
+        &:hover, &:focus{
+            cursor: pointer;
+            border: 1px solid white;
+            background-color: white;
+            border-radius: 0.5rem;
+        }
+    }
+}
+
+header{
+width: 100%;
+height: 5rem;
+background-color: #F9DF4F;
+border-bottom: #000000;
+    .navContainer{
+        display: flex;
+        width: 100%;
+        padding-top: 2rem;
+        padding-left: 2rem;
+        padding-bottom: 2rem;
+        nav{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .brand{
+                font-size: 1.5rem;
+                font-family: 'Arial';
+                font-weight: 550;
+                padding-right: 1rem;
+            }
+            .navMenu{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 1rem;                
+                li{
+                    list-style:none;
+                    .navItems{
+                        font-size: 1rem;
+                        font-family: 'Arial';
+                        font-weight: 520;
+                        padding: 0.4rem 0.6rem;
+                        text-decoration: none;
+                        color: #000000;
+                        cursor: pointer;
+                        transition: all 0.2s ease-in-out;
+                        &:hover, &:focus{
+                            border: 1px solid black;
+                            border-radius: 0.1rem;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+}
