@@ -15,6 +15,7 @@ function getCompanies() {
         });
 }
 
+
 onMounted(() => {
   getCompanies()
 })
