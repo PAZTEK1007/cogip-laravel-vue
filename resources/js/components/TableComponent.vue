@@ -11,116 +11,130 @@ const props = defineProps({
     th5: String,
     data: Array,
 });
-const typeName = ref('')
-const companyName = ref('')
-const companiesTable = ref(null);
-const contactsTable = ref(null);
-const invoicesTable = ref(null);
-const typeId = ref(null);
-const companyId = ref();
 
-async function isCompanies() {
-  if (props.title === "Companies" ) {
-    companiesTable.value = true;
-    await axios.get(`api/types/${typeId}`)
-      .then(response => {
-        typeName.value = response.data.name;
+const companiesTable = ref(false);
+const contactsTable = ref(false);
+const invoicesTable = ref(false);
+const companyNames = ref({});
+const typeNames = ref({});
 
-      })
-      .catch(error => {
-        console.error('Failed to get types' + error.response.data);
-      });
+
+async function getType(typeId) {
+  try {
+    if (!typeNames.value[typeId]) {
+      console.log(typeId);
+      const typeResponse = await axios.get(`/api/types/${typeId}`);
+      typeNames.value[typeId] = typeResponse.data.name;
+    }
+  } catch (error) {
+    console.error(error);
   }
 }
+
+async function getCompanyInfo(companyId) {
+  try {
+    if (!companyNames.value[companyId]) {
+      const companyResponse = await axios.get(`/api/companies/${companyId}`);
+      companyNames.value[companyId] = companyResponse.data.name;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function isCompanies() {
+  companiesTable.value = props.title === "Companies";
+}
+
 function isContacts() {
-  if (props.title === "Contacts" ) {
-    contactsTable.value = true;
-  }
+  contactsTable.value = props.title === "Contacts";
 }
+
 function isInvoices() {
-  if (props.title === "Invoices" ) {
-    invoicesTable.value = true;
-  }
+  invoicesTable.value = props.title === "Invoices";
 }
 
-onMounted(() => {
-  isCompanies()
-  isContacts()
-  isInvoices()
-})
-
+onMounted(async () => {
+  for (let item of props.data) {
+    await getCompanyInfo(item.company_id);
+    await getType(item.type_id);
+  }
+  isCompanies();
+  isContacts();
+  isInvoices();
+});
 </script>
 
 <template>
   <h1 class="title">All {{ title }}</h1>
   <div id="rectangle"></div>
-    <div class="container" v-if="companiesTable">
-      <table v-if="data.length > 0">
-        <thead>
-          <th>{{ th1 }}</th>
-          <th>{{ th2 }}</th>
-          <th>{{ th3 }}</th>
-          <th>{{ th4 }}</th>
-          <th>{{ th5 }}</th>
-        </thead>
-        <tbody>
-          <tr v-for="item in data" :key="item.id">
-            <router-link class="link" :to="{ name: 'Company', params: { id: item.id } }">
-              <td class="td1">{{ item.name }}</td>
-            </router-link>
-            <td class="td2">{{ item.tva }}</td>
-            <td class="td1">{{ item.country }}</td>
-            <td id="typeId" class="td1">{{ item.type_id }}</td>
-            <td class="td1">{{ item.created_at }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
 
-    <div class="container" v-if="contactsTable">
-      <table v-if="data.length > 0">
-        <thead>
-          <th>{{ th1 }}</th>
-          <th>{{ th2 }}</th>
-          <th>{{ th3 }}</th>
-          <th>{{ th4 }}</th>
-          <th>{{ th5 }}</th>
-        </thead>
-        <tbody>
-          <tr v-for="item in data" :key="item.id">
-            <router-link class="link" :to="{ name: 'Contact', params: { id: item.id } }">
-              <td class="td1">{{ item.name }}</td>
-            </router-link>
-            <td class="td2">{{ item.phone }}</td>
-            <td class="td1">{{ item.email }}</td>
-            <router-link class="link" :to="{ name: 'Company', params: { id: item.company_id } }">
-            <td class="td1">{{ item.company_id}}</td>
-            </router-link>
-            <td class="td1">{{ item.created_at }}</td>
-          </tr>
-       
-        </tbody>
-      </table>
-    </div>
+  <div class="container" v-if="companiesTable && data.length > 0">
+    <table>
+      <thead>
+        <th>{{ th1 }}</th>
+        <th>{{ th2 }}</th>
+        <th>{{ th3 }}</th>
+        <th>{{ th4 }}</th>
+        <th>{{ th5 }}</th>
+      </thead>
+      <tbody>
+        <tr v-for="item in data" :key="item.id">
+          <router-link class="link" :to="{ name: 'Company', params: { id: item.id } }">
+            <td class="td1">{{ item.name }}</td>
+          </router-link>
+          <td class="td2">{{ item.tva }}</td>
+          <td class="td1">{{ item.country }}</td>
+          <td id="typeId">{{ typeNames[item.type_id] }} </td>
+          <td class="td1">{{ item.created_at }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <div class="container" v-if="invoicesTable">
-      <table v-if="data.length > 0">
-        <thead>
-          <th>{{ th1 }}</th>
-          <th>{{ th2 }}</th>
-          <th>{{ th3 }}</th>
-          <th>{{ th4 }}</th>
-        </thead>
-        <tbody>
-          <tr v-for="item in data" :key="item.id">
-            <td class="td1">{{ item.ref }}</td>
-            <td class="td2">{{ item.updated_at }}</td>
-            <router-link class="link" :to="{ name: 'Company', params: { id: item.company_id } }">
-              <td class="td1">{{ item.company_id }}</td>
-            </router-link>
-            <td class="td2">{{ item.created_at }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="container" v-if="contactsTable && data.length > 0">
+    <table>
+      <thead>
+        <th>{{ th1 }}</th>
+        <th>{{ th2 }}</th>
+        <th>{{ th3 }}</th>
+        <th>{{ th4 }}</th>
+        <th>{{ th5 }}</th>
+      </thead>
+      <tbody>
+        <tr v-for="item in data" :key="item.id">
+          <router-link class="link" :to="{ name: 'Contact', params: { id: item.id } }">
+            <td class="td1">{{ item.name }}</td>
+          </router-link>
+          <td class="td2">{{ item.phone }}</td>
+          <td class="td1">{{ item.email }}</td>
+          <router-link class="link" :to="{ name: 'Company', params: { id: item.company_id } }">
+            <td class="td1">{{ companyNames[item.company_id] }}</td>
+          </router-link>
+          <td class="td1">{{ item.created_at }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="container" v-if="invoicesTable && data.length > 0">
+    <table>
+      <thead>
+        <th>{{ th1 }}</th>
+        <th>{{ th2 }}</th>
+        <th>{{ th3 }}</th>
+        <th>{{ th4 }}</th>
+      </thead>
+      <tbody>
+        <tr v-for="item in data" :key="item.id">
+          <td class="td1">{{ item.ref }}</td>
+          <td class="td2">{{ item.updated_at }}</td>
+          <router-link class="link" :to="{ name: 'Company', params: { id: item.company_id } }">
+            <td class="td1">{{ companyNames[item.company_id] }}</td>
+          </router-link>
+          <td class="td2">{{ item.created_at }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
